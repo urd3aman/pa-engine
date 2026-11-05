@@ -12,9 +12,9 @@ IQVIA, Mayo Clinic), now building evaluated AI systems for healthcare.
 ## How it works
 
 ```
-             ┌──────────── domain pack (swap per product) ────────────┐
-             │  domain.json    criteria.json (52 verbatim rules)   golden_set/ (30 cases) │
-             └───────┬───────────────┬──────────────────────┬─────────┘
+            ┌───────────────── domain pack (swap per product) ─────────────────┐
+            │ domain.json   criteria.json (52 verbatim rules)   golden_set/ (30) │
+            └───────┬──────────────────────────────────────────────────┬─────┘
 request ──► RETRIEVE ──► PRE-COMPUTE ──► DECIDE ──► CHECK ──► verdict + cited evidence
             plain code    plain code      1 LLM call  plain code
             rules by      date windows,   tool-less,  every cited rule id must
