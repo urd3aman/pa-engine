@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+runs/
+corpus/sources/*
+!corpus/sources/R-MOHAN.md

@@ -1,0 +1,897 @@
+{
+ "_note": "PA_Engine golden set v0.1 (2026-11-02). 30 SYNTHETIC cases (GS-01..20 clean, GS-21..30 messy packets): no real patients, no PHI. Review date for all look-back windows = 2026-11-02. Verdicts: MEETS | DOES_NOT_MEET | MISSING_INFO. Flags: LABEL_POLICY_CONFLICT | SAFETY | SOURCE_GAP. 'expected' is a drafted answer (written with Claude); the expert's grade in grades.json is the gold standard and overrides it where they disagree.",
+ "review_date": "2026-11-02",
+ "cases": [
+  {
+   "id": "GS-01",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "adalimumab (Humira)",
+   "request": "initial",
+   "facts": {
+    "age": 45,
+    "sex": "F",
+    "diagnoses": [
+     "RA, coded 2026-02-10"
+    ],
+    "claims_last_180d": [
+     "methotrexate 15 mg weekly (continuous since 2025-11)"
+    ],
+    "history": "no heart failure, demyelinating disease, hematologic abnormality or serious infection in look-back windows",
+    "other_tnf_last_30d": "none"
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "TX-HUM-1",
+     "TX-HUM-6",
+     "TX-HUM-12",
+     "TX-HUM-13",
+     "TX-HUM-14",
+     "TX-HUM-15",
+     "TX-HUM-16"
+    ],
+    "approval": "365 days",
+    "rationale": "RA within 730 days, adult, no exclusions, no other TNF claim. Note: the Texas Humira RA path requires no prior DMARD; methotrexate history is supportive only."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-02",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "adalimumab (Humira)",
+   "request": "initial",
+   "facts": {
+    "age": 34,
+    "sex": "M",
+    "diagnoses": [
+     "UC, coded 2026-05-01"
+    ],
+    "claims_last_180d": [
+     "mesalamine 4.8 g/day, 60 days supply (2026-06 to 2026-08)"
+    ],
+    "history": "no exclusions",
+    "other_tnf_last_30d": "none"
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "TX-HUM-3",
+     "TX-HUM-9",
+     "TX-HUM-11",
+     "TX-HUM-12",
+     "TX-HUM-13",
+     "TX-HUM-14",
+     "TX-HUM-15",
+     "TX-HUM-16"
+    ],
+    "approval": "365 days",
+    "rationale": "UC within 730 days, age ≥5, at least 30 days of conventional therapy (mesalamine) within 180 days, no exclusions."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-03",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "adalimumab (Humira)",
+   "request": "initial",
+   "facts": {
+    "age": 29,
+    "sex": "F",
+    "diagnoses": [
+     "UC, coded 2026-09-15"
+    ],
+    "claims_last_180d": [
+     "none for UC"
+    ],
+    "chart_note": "prescriber states patient 'failed mesalamine in 2024'",
+    "history": "no exclusions"
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "failed_rule": "TX-HUM-11",
+    "approval": "deny",
+    "rationale": "Initial request with no 30-day conventional-therapy trial in the last 180 days. The 2024 mesalamine trial falls outside the window. Fix: document recent conventional therapy, or appeal with the history (manual review)."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-04",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "adalimumab (Humira)",
+   "request": "initial",
+   "facts": {
+    "age": 61,
+    "sex": "M",
+    "diagnoses": [
+     "PsA, coded 2026-01-20",
+     "heart failure (NYHA II), coded 2026-03-04"
+    ],
+    "other_tnf_last_30d": "none"
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "failed_rule": "TX-HUM-12",
+    "flags": [
+     "SAFETY"
+    ],
+    "label_rules": [
+     "LBL-HUM-HF"
+    ],
+    "approval": "deny",
+    "rationale": "Heart failure within 365 days is an automatic deny in Texas. The label agrees on risk (caution and monitoring in heart failure). Consider a non-TNF alternative (e.g., IL-17/IL-23) for PsA."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-05",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "adalimumab (Humira)",
+   "request": "initial (switch)",
+   "facts": {
+    "age": 52,
+    "sex": "F",
+    "diagnoses": [
+     "RA, coded 2025-12-01"
+    ],
+    "claims_last_30d": [
+     "etanercept 50 mg, filled 2026-10-21 (12 days ago)"
+    ],
+    "chart_note": "switching from etanercept for lack of efficacy",
+    "history": "no other exclusions"
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "failed_rule": "TX-HUM-16",
+    "approval": "deny (time-limited)",
+    "rationale": "Another TNF blocker was claimed within 30 days, so the automated logic denies. Practical fix: resubmit once 30 days have passed since the last etanercept claim, with documentation that etanercept is stopped."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-06",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "upadacitinib (Rinvoq) 15 mg",
+   "request": "initial",
+   "facts": {
+    "age": 48,
+    "sex": "F",
+    "diagnoses": [
+     "RA, coded 2025-08-11"
+    ],
+    "claims_last_90d": [
+     "adalimumab-adbm, last fill 2026-09-23 (40 days ago)"
+    ],
+    "concurrent": "methotrexate 15 mg weekly",
+    "cyp3a4_inducers": "none",
+    "history": "no GI perforation, thrombosis or malignancy risk diagnoses, no severe hepatic impairment, no serious infection",
+    "dose": "1 tablet daily"
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "TX-RIN-3",
+     "TX-RIN-4",
+     "TX-RIN-7",
+     "TX-RIN-9",
+     "TX-RIN-10",
+     "TX-RIN-11",
+     "TX-RIN-12",
+     "TX-RIN-13",
+     "TX-RIN-14"
+    ],
+    "label_rules": [
+     "LBL-RIN-IND"
+    ],
+    "approval": "365 days",
+    "rationale": "TNF-blocker therapy within 90 days satisfies step 7; no exclusions; dose ≤1 tablet a day. It also matches the label (TNF-IR). Under 50, so the MACE boxed-warning population doesn't apply."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-07",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "upadacitinib (Rinvoq) 15 mg",
+   "request": "initial",
+   "facts": {
+    "age": 58,
+    "sex": "M",
+    "diagnoses": [
+     "RA, coded 2026-04-02"
+    ],
+    "claims_last_90d": [
+     "methotrexate"
+    ],
+    "tnf_history": "never received a TNF blocker",
+    "chart_note": "methotrexate inadequate response"
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "failed_rule": "TX-RIN-8",
+    "label_rules": [
+     "LBL-RIN-IND",
+     "LBL-RIN-MACE"
+    ],
+    "flags": [
+     "SAFETY"
+    ],
+    "approval": "deny",
+    "rationale": "No TNF blocker in 90 days and no TNF-IR history, so step 8 denies. This is also off-label: the label requires TNF-IR. Age 58: if any CV risk factor, the boxed-warning MACE population applies. Next step per policy and label: a TNF blocker first."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-08",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "upadacitinib (Rinvoq) 15 mg",
+   "request": "initial",
+   "facts": {
+    "age": 55,
+    "sex": "F",
+    "diagnoses": [
+     "PsA, coded 2026-02-14"
+    ],
+    "tnf_history": "adalimumab Jan–Jul 2026, inadequate response (documented)",
+    "claims_last_90d": [
+     "rifampin 600 mg (filled 2026-10-13)"
+    ],
+    "history": "no other exclusions"
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "failed_rule": "TX-RIN-10",
+    "approval": "deny",
+    "rationale": "A strong CYP3A4 inducer (rifampin) was claimed within 90 days. Rifampin also suggests TB treatment: check active or latent TB status (TX-RIN-13) before any JAK."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-09",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "upadacitinib (Rinvoq) 45 mg induction",
+   "request": "initial",
+   "facts": {
+    "age": 40,
+    "sex": "M",
+    "diagnoses": [
+     "UC, coded 2026-03-30"
+    ],
+    "claims_last_90d": [
+     "infliximab infusion 2026-09-03 (60 days ago)"
+    ],
+    "history": "no exclusions",
+    "dose": "45 mg once daily (1 tablet)"
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "TX-RIN-3",
+     "TX-RIN-4",
+     "TX-RIN-7",
+     "INT-TX-TNF",
+     "TX-RIN-9",
+     "TX-RIN-10",
+     "TX-RIN-11",
+     "TX-RIN-12",
+     "TX-RIN-13",
+     "TX-RIN-14"
+    ],
+    "approval": "365 days",
+    "rationale": "UC; TNF blocker (infliximab) within 90 days; induction dose is still 1 tablet daily, so step 14 passes. Infliximab must be stopped (no concurrent biologic DMARD). Ruling (Mohan, 2 Nov 2026): an infliximab infusion counts as TNF-blocker therapy for Texas step 7, even though the Texas TNF Blocker pharmacy table does not list infliximab (medical-benefit drug)."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-10",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "risankizumab (Skyrizi)",
+   "request": "initial",
+   "facts": {
+    "age": 38,
+    "sex": "F",
+    "diagnoses": [
+     "UC moderately to severely active, coded 2026-06-12"
+    ],
+    "history": "no serious infection",
+    "dose": "induction per label"
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "failed_rule": "TX-SKY-2",
+    "flags": [
+     "LABEL_POLICY_CONFLICT"
+    ],
+    "label_rules": [
+     "LBL-SKY-UC"
+    ],
+    "approval": "deny under automated criteria",
+    "rationale": "The Texas Skyrizi logic lists CD, PsO and PsA only, so UC is denied at step 2. The FDA label lists UC as an indication (1.4). Flag for manual review or exception and report the gap to the criteria owner (DUR Board). Engine must not 'auto-approve' against payer logic."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-11",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "risankizumab (Skyrizi) 150 mg",
+   "request": "initial",
+   "facts": {
+    "age": 50,
+    "sex": "M",
+    "diagnoses": [
+     "PsA, coded 2026-07-01"
+    ],
+    "history": "no serious infection",
+    "dose": "one 150 mg pen"
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "TX-SKY-2",
+     "TX-SKY-3",
+     "TX-SKY-4"
+    ],
+    "approval": "365 days",
+    "rationale": "Adult, PsA within 730 days, no infection, quantity within limit."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-12",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "ustekinumab (Stelara or biosimilar)",
+   "request": "initial",
+   "facts": {
+    "age": 27,
+    "sex": "F",
+    "diagnoses": [
+     "UC, coded 2026-04-18"
+    ],
+    "claims_last_180d": [
+     "prednisone taper 40 mg, 42 days (2026-07 to 2026-08)"
+    ],
+    "history": "no serious infection"
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "TX-STE-4",
+     "TX-STE-5",
+     "TX-STE-6"
+    ],
+    "approval": "365 days",
+    "rationale": "Adult UC with at least 30 days of corticosteroid within 180 days; no infection."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-13",
+   "payer": "Cigna commercial (S45)",
+   "drug": "tofacitinib brand (Xeljanz)",
+   "request": "initial",
+   "facts": {
+    "age": 46,
+    "sex": "F",
+    "diagnoses": [
+     "RA"
+    ],
+    "meets_standard_tofacitinib_PA": "assumed yes",
+    "tried": [
+     "generic tofacitinib (3 months)",
+     "adalimumab-aaty (8 months, inadequate response)"
+    ],
+    "chart_note": "patient prefers brand; no documented reaction to inactive ingredients"
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "failed_rule": "CIG-040-RA",
+    "label_rules": [
+     "LBL-XEL-IND"
+    ],
+    "approval": "deny brand; redirect to generic tofacitinib",
+    "rationale": "Brand requires a documented significant allergy or serious reaction to the generic's inactive ingredients (b). Preference isn't enough. Generic tofacitinib is the preferred route; TNF-IR is met (label OK)."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-14",
+   "payer": "Aetna commercial (S46)",
+   "drug": "upadacitinib (Rinvoq) 15 mg",
+   "request": "initial",
+   "facts": {
+    "age": 44,
+    "sex": "F",
+    "diagnoses": [
+     "moderately to severely active RA"
+    ],
+    "prescriber": "rheumatologist",
+    "tried": [
+     "etanercept 5 months, stopped for injection-site reactions and inadequate response"
+    ],
+    "tb_test": "IGRA negative 2026-09-01",
+    "documentation": "chart notes attached"
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "AET-RIN-PRESC",
+     "AET-RIN-RA",
+     "AET-RIN-TB",
+     "AET-RIN-DOC"
+    ],
+    "label_rules": [
+     "LBL-RIN-IND"
+    ],
+    "approval": "12 months",
+    "rationale": "TNF intolerance and inadequate response, rheumatologist, documented negative TB test within 6 months, documentation attached."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-15",
+   "payer": "Aetna commercial (S46)",
+   "drug": "upadacitinib (Rinvoq) 45 mg induction",
+   "request": "initial",
+   "facts": {
+    "age": 39,
+    "sex": "M",
+    "diagnoses": [
+     "moderately to severely active UC"
+    ],
+    "prescriber": "family medicine physician",
+    "consultation": "not documented",
+    "tried": [
+     "adalimumab 6 months, inadequate response"
+    ],
+    "tb_test": "not in packet"
+   },
+   "expected": {
+    "verdict": "MISSING_INFO",
+    "failed_rule": "AET-RIN-PRESC",
+    "approval": "pend",
+    "rationale": "Clinical criteria are met (TNF-IR). UC must be prescribed by or in consultation with a gastroenterologist. Request the GI consult note; if none, the request fails."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-16",
+   "payer": "Aetna commercial (S46)",
+   "drug": "upadacitinib (Rinvoq) 15 mg",
+   "request": "initial",
+   "facts": {
+    "age": 51,
+    "sex": "F",
+    "diagnoses": [
+     "active PsA"
+    ],
+    "prescriber": "dermatologist",
+    "tried": [
+     "adalimumab 7 months, inadequate response"
+    ],
+    "tb_test": "not in packet",
+    "cv_risk": "none documented"
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "AET-RIN-PRESC",
+     "AET-RIN-PSA"
+    ],
+    "approval": "12 months",
+    "rationale": "TNF-IR and a dermatologist prescriber both qualify. The TB-test rule applies only to persons naïve to biologics or targeted synthetics; she isn't naïve, so it doesn't block. Good practice: recommend TB screening anyway (label boxed warning). Tests whether the engine over-applies rules."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-17",
+   "payer": "Aetna commercial (S46)",
+   "drug": "upadacitinib (Rinvoq) 15 mg",
+   "request": "renewal (month 12)",
+   "facts": {
+    "age": 62,
+    "sex": "M",
+    "diagnoses": [
+     "RA"
+    ],
+    "baseline": {
+     "tender_joints": 14,
+     "swollen_joints": 12,
+     "pain_vas": 7,
+     "HAQ_DI": 1.5
+    },
+    "current": {
+     "tender_joints": 12,
+     "swollen_joints": 10,
+     "pain_vas": 7,
+     "HAQ_DI": 1.4
+    },
+    "cv_risk": "current smoker, hypertension"
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "failed_rule": "AET-RIN-RENEW-RA",
+    "flags": [
+     "SAFETY"
+    ],
+    "label_rules": [
+     "LBL-RIN-MACE"
+    ],
+    "approval": "deny renewal",
+    "rationale": "Improvement: TJC 14.3%, SJC 16.7%, pain 0%, HAQ 6.7%. None reaches the ≥20% threshold. Safety: age ≥50, a current smoker with hypertension, is the label's boxed-warning MACE population; recommend reassessing the JAK."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-18",
+   "payer": "Aetna commercial (S46)",
+   "drug": "upadacitinib (Rinvoq) 45 mg induction",
+   "request": "initial",
+   "facts": {
+    "age": 35,
+    "sex": "F",
+    "diagnoses": [
+     "moderately to severely active UC"
+    ],
+    "prescriber": "gastroenterologist",
+    "tried": [
+     "mesalamine",
+     "prednisone"
+    ],
+    "biologic_history": "naïve"
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "failed_rule": "AET-RIN-UC1",
+    "approval": "deny",
+    "rationale": "Neither UC pathway is met: no TNF-IR (UC1) and no prior non-TNF biologic or targeted synthetic (UC2). A TNF inhibitor (or another preferred biologic) is the policy route."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-19",
+   "payer": "Cigna commercial Legacy (S44)",
+   "drug": "adalimumab non-preferred (Hadlima)",
+   "request": "initial",
+   "facts": {
+    "age": 47,
+    "sex": "M",
+    "diagnoses": [
+     "RA"
+    ],
+    "meets_standard_adalimumab_PA": "assumed yes",
+    "tried": [
+     "Humira NDC 00074 (2 years, stable)"
+    ],
+    "reason": "prescriber prefers Hadlima citrate-free formulation for injection pain"
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "failed_rule": "CIG-003-EXC",
+    "approval": "deny non-preferred; redirect to a preferred product",
+    "rationale": "The exception requires trying ALL four preferred products AND a documented significant allergy or serious reaction to their inactive ingredients. Only one was tried, and injection pain alone doesn't meet the bar."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-20",
+   "payer": "Cigna commercial Legacy (S44)",
+   "drug": "adalimumab preferred (Simlandi, NDC 82009)",
+   "request": "initial",
+   "facts": {
+    "age": 30,
+    "sex": "F",
+    "diagnoses": [
+     "active PsA"
+    ],
+    "tried": [
+     "methotrexate 4 months"
+    ],
+    "tb_test": "negative"
+   },
+   "expected": {
+    "verdict": "MISSING_INFO",
+    "flags": [
+     "SOURCE_GAP"
+    ],
+    "failed_rule": "CIG-003-STD",
+    "approval": "cannot determine from corpus",
+    "rationale": "Preferred product, so PSM003 adds no step. But approval depends on the separate standard 'Inflammatory Conditions – Adalimumab Products Prior Authorization Policy', which isn't in the corpus yet. The engine must say 'source not available', not guess."
+   },
+   "set": "clean"
+  },
+  {
+   "id": "GS-21",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "adalimumab (Humira)",
+   "request": "initial",
+   "facts": {
+    "age": 57,
+    "sex": "M",
+    "claims": [
+     "ICD-10 M05.79 (RA with rheumatoid factor) billed 2026-06-18, 2026-09-10",
+     "methotrexate 20 mg weekly, fills monthly since 2025-12",
+     "no claims with demyelinating-disease or hematologic-abnormality diagnoses in the look-back windows"
+    ],
+    "packet": "FAX p1/5 RHEUM PROGRESS NOTE 2026-09-10. HPI: 57M seropositive RA, persistent synovitis MCPs bilat despite MTX 20 mg. PMH (carried forward from prior EHR): HTN, HLD, CHF, GERD, OA knees. Meds: MTX, folic acid, lisinopril, atorvastatin. p3/5 CARDIOLOGY CONSULT 2026-03-22: 'Referred for 'CHF' on problem list. Echo 2026-03-15 EF 60%, normal diastolic function, no structural disease. Patient has NO history of heart failure; the 2019 problem-list entry was ankle edema from amlodipine, resolved after stopping it. Removing CHF from problem list.' p4/5 Labs 2026-09-01: CBC normal. QuantiFERON negative 2026-08-28. HBsAg negative.",
+    "other_tnf_claims": "none in claims history"
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "TX-HUM-1",
+     "TX-HUM-6",
+     "TX-HUM-12",
+     "TX-HUM-13",
+     "TX-HUM-14",
+     "TX-HUM-15",
+     "TX-HUM-16"
+    ],
+    "approval": "365 days",
+    "flags": [],
+    "rationale": "RA within 730 days, adult. 'CHF' on the copy-forward problem list is contradicted by the 2026-03-22 cardiology consult (normal echo; entry was amlodipine edema), so there is no heart failure in the last 365 days. Labs clear the other exclusions; no other TNF claim. Trap: denying or safety-flagging on a stale problem-list entry."
+   },
+   "set": "messy"
+  },
+  {
+   "id": "GS-22",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "adalimumab (Humira)",
+   "request": "initial",
+   "facts": {
+    "age": 26,
+    "sex": "F",
+    "claims": [
+     "ICD-10 K51.90 (UC, unspecified) billed 2026-02-03, 2026-10-20",
+     "mesalamine DR 1.2 g x4/day, 30 days supply, filled 2026-03-20",
+     "mesalamine DR 1.2 g x4/day, 30 days supply, filled 2026-04-25",
+     "no later mesalamine fills"
+    ],
+    "packet": "GI NOTE 2026-10-20: 26F left-sided UC dx 02/2026, Mayo score 8 today. 'Has been on mesalamine since March, continues to flare.' Plan: start adalimumab. No hx HF, MS, cytopenias; QFT neg 2026-10-01. No other biologics."
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "path": [
+     "TX-HUM-3",
+     "TX-HUM-9",
+     "TX-HUM-11"
+    ],
+    "failed_rule": "TX-HUM-11",
+    "flags": [],
+    "rationale": "180-day window = 2026-05-06 to 2026-11-02. The last fill (2026-04-25, 30 days) covers 04-25 to 05-24, i.e. only 19 days inside the window; the 03-20 fill is entirely outside. No 30-day conventional-therapy trial in the window, initial request, so deny. The note's 'continues' is not supported by claims. Fix: submit pharmacy records showing ongoing use (possible cash/other-payer fills) or document a recent 30-day trial. Trap: trusting the narrative over claim dates; date arithmetic."
+   },
+   "set": "messy"
+  },
+  {
+   "id": "GS-23",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "upadacitinib (Rinvoq) 15 mg",
+   "request": "initial",
+   "facts": {
+    "age": 47,
+    "sex": "F",
+    "claims": [
+     "ICD-10 M06.9 (RA) billed 2026-01-14, 2026-10-05",
+     "adalimumab-aaty 40 mg, last fill 2026-07-29",
+     "carbamazepine 200 mg BID, last fill 2026-06-15",
+     "levetiracetam 500 mg BID, fills monthly since 2026-07-01",
+     "methotrexate 15 mg weekly, ongoing"
+    ],
+    "packet": "RHEUM 2026-10-05: moderately to severely active RA, CDAI 31. Adalimumab-aaty 12/2025-07/2026: initial response then secondary loss of response, documented CDAI 28 -> 30 on therapy; stopped 07/2026. Azathioprine 50 mg discontinued 2026-09-02 (GI intolerance). Plan: Rinvoq 15 mg once daily, continue MTX. NEURO 2026-06-30: 'carbamazepine switched to levetiracetam for seizure prophylaxis; carbamazepine stopped.' No GI perforation, VTE or malignancy history; no liver disease, LFTs normal 2026-09-20. QFT neg, HBV neg 2026-09. Rx: Rinvoq 15 mg, #30 per 30 days.",
+    "cv_risk": "none documented"
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "TX-RIN-3",
+     "TX-RIN-4",
+     "TX-RIN-7",
+     "TX-RIN-8",
+     "TX-RIN-9",
+     "TX-RIN-10",
+     "TX-RIN-11",
+     "TX-RIN-12",
+     "TX-RIN-13",
+     "TX-RIN-14"
+    ],
+    "label_rules": [
+     "LBL-RIN-IND"
+    ],
+    "approval": "365 days",
+    "flags": [],
+    "rationale": "90-day window starts 2026-08-04: the last adalimumab fill (2026-07-29) is 96 days ago, so TX-RIN-7 = No and the manual step TX-RIN-8 applies; secondary loss of response is documented, so Yes. Azathioprine stopped 2026-09-02, MTX is not a JAK, biologic or listed potent immunosuppressant. Carbamazepine (strong CYP3A4 inducer) last filled 2026-06-15 = 140 days ago, outside 90 days, and stopped. Dose 1 tablet daily. Traps: three near-miss dates (TNF at 96 days, inducer at 140 days, azathioprine stopped)."
+   },
+   "set": "messy"
+  },
+  {
+   "id": "GS-24",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "upadacitinib (Rinvoq) 15 mg",
+   "request": "initial",
+   "facts": {
+    "age": 44,
+    "sex": "M",
+    "claims": [
+     "ICD-10 L40.50 (arthropathic psoriasis) billed 2026-05-11, 2026-10-14",
+     "etanercept 50 mg weekly, last fill 2026-09-30"
+    ],
+    "packet": "RHEUM 2026-10-14: active PsA, dactylitis R 2nd toe, 6 tender joints despite etanercept x 9 mo. Etanercept stopped, last dose 2026-10-14. Plan: upadacitinib 15 mg PO once daily. No infections, no VTE/GI/malignancy hx, no liver disease. PA FORM (pharmacy section): 'Rinvoq 15 mg ER tab — Qty: 60 — Days supply: 30 — Sig: as directed.'"
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "path": [
+     "TX-RIN-3",
+     "TX-RIN-4",
+     "TX-RIN-7",
+     "TX-RIN-9",
+     "TX-RIN-10",
+     "TX-RIN-11",
+     "TX-RIN-12",
+     "TX-RIN-13",
+     "TX-RIN-14"
+    ],
+    "failed_rule": "TX-RIN-14",
+    "label_rules": [
+     "LBL-RIN-PSA"
+    ],
+    "flags": [],
+    "rationale": "All clinical steps pass (PsA, adult, TNF within 90 days, etanercept stopped, no inducer or exclusions). But the requested quantity is 60 tablets per 30 days = 2 tablets daily, above the 1-tablet limit. The note says once daily, so this is likely a form error: resubmit with Qty 30/30. Trap: the clinical note and the claim quantity disagree; the request as submitted fails."
+   },
+   "set": "messy"
+  },
+  {
+   "id": "GS-25",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "risankizumab (Skyrizi) 150 mg",
+   "request": "initial",
+   "facts": {
+    "age": 39,
+    "sex": "F",
+    "claims": [
+     "ICD-10 L40.0 (psoriasis vulgaris) billed 2025-11-02, 2026-08-19"
+    ],
+    "packet": "DERM 2026-08-19: plaque psoriasis, BSA 14%, PASI 16, scalp and genital involvement; 'moderate to severe plaque psoriasis, candidate for systemic biologic.' Also c/o morning stiffness L wrist — 'r/o psoriatic arthritis, rheum referral placed.' Requested: Skyrizi 150 mg/mL pen, 1 pen per fill (week 0, week 4, then q12 weeks). TB IGRA neg 2026-08-01; no active infection. Cover letter header: 'Dx: psoriatic arthritis'."
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "TX-SKY-2",
+     "TX-SKY-3",
+     "TX-SKY-4"
+    ],
+    "approval": "365 days",
+    "flags": [],
+    "rationale": "PsA is only suspected (not diagnosed), but TX-SKY-2 is also met by moderate to severe plaque psoriasis within 730 days (L40.0 billed, BSA 14%, PASI 16). No serious infection; one 150 mg pen per fill. Trap: the cover letter claims PsA; an engine that tests only the stated diagnosis would deny or ask for more info, though the packet supports an approvable indication."
+   },
+   "set": "messy"
+  },
+  {
+   "id": "GS-26",
+   "payer": "Texas Medicaid (S43)",
+   "drug": "ustekinumab (Stelara or biosimilar)",
+   "request": "initial",
+   "facts": {
+    "age": 33,
+    "sex": "M",
+    "claims": [
+     "ICD-10 K51.011 (UC pancolitis with rectal bleeding) billed 2026-07-08",
+     "prednisone 20 mg, 10 days supply, filled 2026-08-01",
+     "budesonide ER 9 mg, 15 days supply, filled 2026-06-20",
+     "azathioprine 100 mg, 90 days supply, filled 2025-12-15"
+    ],
+    "packet": "GI 2026-10-12: moderate-severe UC, 6-8 bloody BM/day. 'Has been on steroids on and off for months, flares on taper. Azathioprine stopped early 2026 for leukopenia (resolved).' Plan: ustekinumab IV induction. No current infection; QFT neg."
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "path": [
+     "TX-STE-4",
+     "TX-STE-5"
+    ],
+    "failed_rule": "TX-STE-5",
+    "flags": [],
+    "rationale": "180-day window starts 2026-05-06. Corticosteroids in window: budesonide 15 days + prednisone 10 days = 25 days, under 30 even if added together. Azathioprine 90-day fill from 2025-12-15 ends 2026-03-15, before the window. 'On and off for months' is not supported by claims. Fix: submit records of other steroid courses (e.g. hospital or samples) or complete a 30-day course. Trap: vague narrative vs claims; summing courses."
+   },
+   "set": "messy"
+  },
+  {
+   "id": "GS-27",
+   "payer": "Aetna commercial (S46)",
+   "drug": "upadacitinib (Rinvoq) 15 mg",
+   "request": "renewal (month 12)",
+   "facts": {
+    "age": 54,
+    "sex": "F",
+    "packet": "RHEUM renewal letter 2026-10-22. Dx: moderately to severely active rheumatoid arthritis (M05.79). Baseline (2025-10-20, pre-Rinvoq): TJC28 10, SJC28 8, patient pain VAS 80 mm (0-100), HAQ-DI 1.8. Today: TJC28 9, SJC28 8, pain 6/10 (NRS), HAQ-DI 1.75. 'Partial response, patient wishes to continue.' Meds: Rinvoq 15 mg daily, atorvastatin 40 mg (hyperlipidemia), vitamin D. Never smoker. Prescriber: rheumatologist."
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "AET-RIN-RENEW-RA"
+    ],
+    "label_rules": [
+     "LBL-RIN-IND",
+     "LBL-RIN-MACE"
+    ],
+    "approval": "12 months",
+    "flags": [
+     "SAFETY"
+    ],
+    "rationale": "Pain improved from 80 mm/100 to 6/10 (= 60 mm/100): 25% improvement, which meets the >=20% test in one domain (TJC 10%, SJC 0%, HAQ 2.8% do not). SAFETY: age >=50 with a cardiovascular risk factor (hyperlipidemia on a statin) is the label's boxed-warning MACE population; document the risk-benefit discussion. Trap: mixed units (mm VAS vs 0-10 NRS); an engine that compares 80 to 6 or skips conversion gets it wrong."
+   },
+   "set": "messy"
+  },
+  {
+   "id": "GS-28",
+   "payer": "Aetna commercial (S46)",
+   "drug": "upadacitinib (Rinvoq) 45 mg induction",
+   "request": "initial",
+   "facts": {
+    "age": 41,
+    "sex": "M",
+    "packet": "Letter of medical necessity, Digestive Health Associates, 2026-10-09, signed 'J. Ortiz, NP-C' with co-signature 'K. Rao, MD, Gastroenterology (supervising physician)'. Dx: moderately to severely active UC (Mayo 9). History: infliximab 5 mg/kg 2024-11 to 2026-08, secondary loss of response, anti-infliximab antibodies detected 2026-07; trough undetectable. Mesalamine, prednisone prior. Attachments: infusion records, colonoscopy 2026-09-02, antibody report. Prescriber NPI taxonomy on form: 363LF0000X (Nurse Practitioner, Family)."
+   },
+   "expected": {
+    "verdict": "MEETS",
+    "path": [
+     "AET-RIN-PRESC",
+     "AET-RIN-UC1",
+     "AET-RIN-DOC"
+    ],
+    "label_rules": [
+     "LBL-RIN-UC"
+    ],
+    "approval": "12 months",
+    "flags": [],
+    "rationale": "TNF inadequate response (infliximab, secondary loss with antibodies) meets UC1. The prescriber is an NP, but the request is co-signed by a supervising gastroenterologist, which satisfies 'prescribed by or in consultation with' a gastroenterologist. Documentation attached; TB rule does not apply (biologic-experienced). Trap: the family-NP taxonomy code looks like GS-15's failure, but consultation is documented."
+   },
+   "set": "messy"
+  },
+  {
+   "id": "GS-29",
+   "payer": "Aetna commercial (S46)",
+   "drug": "upadacitinib (Rinvoq) 15 mg",
+   "request": "initial",
+   "facts": {
+    "age": 49,
+    "sex": "F",
+    "packet": "RHEUM 2026-09-28: active PsA, enthesitis and 5 swollen joints. 'Patient has FAILED BIOLOGIC THERAPY and needs a JAK.' Prior therapy: methotrexate 2023-2024 (GI intolerance), apremilast 2024 (diarrhea), secukinumab 300 mg 2025-01 to 2026-06 (primary non-response). Never on a TNF inhibitor: 'patient declined TNF due to family history of MS.' Prescriber: rheumatologist. IGRA neg 2026-09-15."
+   },
+   "expected": {
+    "verdict": "DOES_NOT_MEET",
+    "path": [
+     "AET-RIN-PRESC",
+     "AET-RIN-PSA"
+    ],
+    "failed_rule": "AET-RIN-PSA",
+    "label_rules": [
+     "LBL-RIN-PSA"
+    ],
+    "flags": [],
+    "rationale": "The PsA pathway requires inadequate response or intolerance to at least one TNF inhibitor. Secukinumab (IL-17) and apremilast are not TNF inhibitors, and the patient never received one. 'Failed biologic therapy' is true but not what the rule asks. The family history of MS (a TNF-blocker precaution) could support a medical-exception request, but it does not meet the policy as written. Trap: generic 'failed biologics' language."
+   },
+   "set": "messy"
+  },
+  {
+   "id": "GS-30",
+   "payer": "Cigna commercial (S45)",
+   "drug": "tofacitinib brand (Xeljanz)",
+   "request": "initial",
+   "facts": {
+    "age": 52,
+    "sex": "M",
+    "meets_standard_tofacitinib_PA": "assumed yes",
+    "packet": "Prescriber letter 2026-10-16: 'Patient developed hives and lip swelling within 48 hours of starting generic tofacitinib (filled 2026-09-02), twice. We suspect a reaction to an inactive ingredient in the generic and request brand Xeljanz. Allergy referral placed; appointment 2026-11-20.' Prior: etanercept 2024-2025, inadequate response (records attached). No allergist report, no ED/urgent care record, and no ingredient comparison in the packet."
+   },
+   "expected": {
+    "verdict": "MISSING_INFO",
+    "path": [
+     "CIG-040-RA"
+    ],
+    "failed_rule": "CIG-040-RA",
+    "label_rules": [
+     "LBL-XEL-IND"
+    ],
+    "flags": [],
+    "rationale": "(a) generic tried and (c) Enbrel tried are documented. (b) requires the prescriber's statement that formulation differences would cause a significant allergy or serious reaction [documentation required]: a reaction is described but suspected, with the allergist visit pending and no supporting records. Request the allergist report or the ED/clinic record of the reaction. Contrast GS-13 (no reaction at all = does not meet)."
+   },
+   "set": "messy"
+  }
+ ]
+}

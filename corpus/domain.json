@@ -1,0 +1,105 @@
+{
+ "_note": "Domain pack for PA_Engine: everything prior-authorization-specific lives here, so the pa_engine code can serve another evidence-decision product by swapping this file, criteria.json and the golden set.",
+ "name": "PA_Engine: prior-authorization appropriateness (RA / PsA / UC advanced therapies)",
+ "version": "0.6",
+ "verdicts": [
+  "MEETS",
+  "DOES_NOT_MEET",
+  "MISSING_INFO"
+ ],
+ "flags": [
+  "SAFETY",
+  "LABEL_POLICY_CONFLICT",
+  "SOURCE_GAP"
+ ],
+ "subjects": [
+  "adalimumab",
+  "upadacitinib",
+  "risankizumab",
+  "ustekinumab",
+  "tofacitinib"
+ ],
+ "subject_field": "drug",
+ "source_field": "payer",
+ "source_pattern": "\\((S\\d+)\\)",
+ "always_include_source_prefix": "L-",
+ "request_fields": [
+  "id",
+  "payer",
+  "drug",
+  "request",
+  "facts"
+ ],
+ "role": "You are PA_Engine, a prior-authorization appropriateness reviewer. You decide ONLY from the payer rules and FDA-label\nrules given in the prompt; never use outside knowledge of payer policies. Reply with ONE JSON object and nothing else.",
+ "request_header": "REQUEST\npayer: {payer}\ndrug: {drug}\nrequest type: {request}\nfacts (from the PA packet and claims history):\n{facts}",
+ "instructions": "Rules of kind \"definition\" are the payer's own supporting tables: they list which drugs the payer counts for a term used in its rules.\nRules of kind \"interpretation\" are dated rulings by the plan's clinical reviewer on how to apply the payer text where it is silent or its tables are incomplete. They are not payer policy: follow them, cite them by id, and say in the rationale that an interpretation was applied.\n\nSources in the corpus for this payer: {sources}. If the decision depends on a policy that a rule refers to but that is\nNOT in the corpus, do not guess: answer MISSING_INFO and add flag SOURCE_GAP.\n\nDecide:\n- MEETS: every applicable payer rule is satisfied by the facts.\n- DOES_NOT_MEET: at least one applicable payer rule fails on the facts given (the payer rules decide, not the label).\n- MISSING_INFO: no rule fails yet, but a required fact is absent from the packet and must be requested.\nApply a rule only to the population it names (e.g. a rule for biologic-naive patients does not apply to experienced ones).\nFlags (zero or more):\n- SAFETY: the FDA label adds a safety concern for this patient (boxed warning population, contraindication, warning).\n- LABEL_POLICY_CONFLICT: the label and the payer rules disagree (e.g. a labeled indication the payer criteria omit).\n- SOURCE_GAP: as above.",
+ "output_contract": "{{\"verdict\": \"MEETS|DOES_NOT_MEET|MISSING_INFO\",\n  \"failed_rules\": [\"ids of the payer rule(s) that fail or need missing info; empty if MEETS\"],\n  \"rules_checked\": [\"ids of every rule you applied, in order\"],\n  \"label_rules\": [\"ids of label rules relevant to this patient\"],\n  \"flags\": [],\n  \"rationale\": \"2-4 sentences, with any arithmetic shown\",\n  \"next_step\": \"what the prescriber or reviewer should do next\"}}",
+ "routing": true,
+ "diagnoses": [
+  {
+   "name": "rheumatoid arthritis",
+   "icd10": [
+    "M05",
+    "M06"
+   ],
+   "patterns": [
+    "(?i)rheumatoid arthritis",
+    "\\bRA\\b"
+   ]
+  },
+  {
+   "name": "psoriatic arthritis",
+   "icd10": [
+    "L40.5"
+   ],
+   "patterns": [
+    "(?i)psoriatic arthritis",
+    "\\bPsA\\b"
+   ]
+  },
+  {
+   "name": "plaque psoriasis",
+   "icd10": [
+    "L40.0"
+   ],
+   "patterns": [
+    "(?i)plaque psoriasis",
+    "(?i)psoriasis vulgaris",
+    "\\bPS\\b"
+   ]
+  },
+  {
+   "name": "ankylosing spondylitis",
+   "icd10": [
+    "M45"
+   ],
+   "patterns": [
+    "(?i)ankylosing spondylitis",
+    "\\bAS\\b"
+   ]
+  },
+  {
+   "name": "ulcerative colitis",
+   "icd10": [
+    "K51"
+   ],
+   "patterns": [
+    "(?i)ulcerative colitis",
+    "\\bUC\\b"
+   ]
+  },
+  {
+   "name": "Crohn's disease",
+   "icd10": [
+    "K50"
+   ],
+   "patterns": [
+    "(?i)crohn",
+    "\\bCD\\b"
+   ]
+  }
+ ],
+ "any_vote_flags": [
+  "SAFETY"
+ ]
+}

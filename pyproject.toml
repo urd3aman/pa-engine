@@ -1,0 +1,11 @@
+[project]
+name = "pa-engine"
+version = "0.5.1"
+description = "PA_Engine: evidence-grounded prior-authorization decisions with verified citations"
+requires-python = ">=3.12"
+dependencies = []          # standard library only
+license = { text = "All rights reserved" }
+authors = [{ name = "Mohan Nadarajah" }]
+
+[project.scripts]
+pa-engine = "pa_engine.cli:main"

@@ -1,0 +1,12 @@
+Copyright (c) 2026 Mohan Nadarajah. All rights reserved.
+
+This repository is made publicly visible so that it can be read and evaluated. No license is granted to copy, modify,
+distribute, sublicense, or use this code, data, or documentation, in whole or in part, for any purpose, except that you may
+view it on GitHub and clone it to run it locally for the sole purpose of evaluating the author's work.
+
+For any other use, contact the author.
+
+Rule quotes in corpus/criteria.json are short excerpts from third-party payer policies and FDA prescribing information,
+included with their source and version for citation; those documents remain the property of their publishers.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. IT IS NOT MEDICAL ADVICE AND NOT A COVERAGE DETERMINATION.

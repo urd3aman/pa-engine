@@ -1,0 +1,467 @@
+{
+ "_note": "PA_Engine corpus v0.1 (2026-11-02). Every rule quotes its source verbatim (whitespace normalised). Definition rules (kind=definition, drug='*') quote Texas S43 supporting tables row by row; the engine supplies them when a supplied rule uses a term in 'defines'. Source documents other than R-MOHAN are not redistributed: download each from its url into corpus/sources/<file> to let `verify` check its quotes.",
+ "sources": {
+  "S43": {
+   "title": "Texas Prior Authorization Program Clinical Criteria: Cytokine and CAM Antagonists",
+   "publisher": "Texas HHSC / Health Information Designs (Acentra)",
+   "version": "Revised April 10, 2026",
+   "url": "https://paxpress-txpa.acentra.com/cytokine.pdf",
+   "file": "sources/S43.md"
+  },
+  "S44": {
+   "title": "Cigna PSM003 Inflammatory Conditions: Adalimumab Products Preferred Specialty Management (Legacy Drug List Plans)",
+   "publisher": "Cigna",
+   "version": "Effective 08/20/2026",
+   "url": "https://static.cigna.com/assets/chcp/pdf/coveragePolicies/pharmacy/psm_003_inflammatory_conditions_adalimumab_products.pdf",
+   "file": "sources/S44.md"
+  },
+  "S45": {
+   "title": "Cigna PSM040 Inflammatory Conditions: Tofacitinib Products PSM (Standard/Performance and Total Savings)",
+   "publisher": "Cigna",
+   "version": "Effective 08/20/2026",
+   "url": "https://chk.static.cigna.com/assets/chcp/pdf/coveragePolicies/pharmacy/psm_040_coveragepositioncriteria_inflammatory%20conditions_tofacitinib_%20products_s_p_ts.pdf",
+   "file": "sources/S45.md"
+  },
+  "S46": {
+   "title": "Aetna Specialty Pharmacy Clinical Policy Bulletin: Rinvoq 3173-A SGM P2024b (commercial)",
+   "publisher": "Aetna",
+   "version": "P2024b (2025 commercial folder)",
+   "url": "https://www.aetna.com/products/rxnonmedicare/data/2025%20commercial/Rinvoq_3173-A_SGM_P2024b.html",
+   "file": "sources/S46.md"
+  },
+  "L-HUMIRA": {
+   "title": "HUMIRA (adalimumab) prescribing information",
+   "publisher": "U.S. FDA label (via DailyMed)",
+   "version": "effective 2025-12-23",
+   "url": "https://dailymed.nlm.nih.gov/dailymed/search.cfm?query=HUMIRA",
+   "file": "sources/L-HUMIRA.txt"
+  },
+  "L-RINVOQ": {
+   "title": "RINVOQ (upadacitinib) prescribing information",
+   "publisher": "U.S. FDA label (via DailyMed)",
+   "version": "effective 2026-06-30",
+   "url": "https://dailymed.nlm.nih.gov/dailymed/search.cfm?query=RINVOQ",
+   "file": "sources/L-RINVOQ.txt"
+  },
+  "L-SKYRIZI": {
+   "title": "SKYRIZI (risankizumab-rzaa) prescribing information",
+   "publisher": "U.S. FDA label (via DailyMed)",
+   "version": "effective 2026-06-15",
+   "url": "https://dailymed.nlm.nih.gov/dailymed/search.cfm?query=SKYRIZI",
+   "file": "sources/L-SKYRIZI.txt"
+  },
+  "L-XELJANZ": {
+   "title": "XELJANZ (tofacitinib) prescribing information",
+   "publisher": "U.S. FDA label (via DailyMed)",
+   "version": "effective 2026-07-13",
+   "url": "https://dailymed.nlm.nih.gov/dailymed/search.cfm?query=XELJANZ",
+   "file": "sources/L-XELJANZ.txt"
+  },
+  "R-MOHAN": {
+   "title": "Reviewer interpretations by Mohan Nadarajah (clinical reviewer); not payer policy",
+   "publisher": "Mohan Nadarajah",
+   "version": "2026-11-02",
+   "file": "sources/R-MOHAN.md"
+  }
+ },
+ "rules": [
+  {
+   "id": "TX-HUM-1",
+   "source": "S43",
+   "drug": "adalimumab",
+   "kind": "diagnosis",
+   "quote": "Does the client have a diagnosis of ankylosing spondylitis (AS), plaque psoriasis (PS), psoriatic arthritis (PsA) and/or rheumatoid arthritis (RA) in the last 730 days? [] Yes – Go to #6"
+  },
+  {
+   "id": "TX-HUM-3",
+   "source": "S43",
+   "drug": "adalimumab",
+   "kind": "diagnosis",
+   "quote": "Does the client have a diagnosis of ulcerative colitis (UC) in the last 730 days? [] Yes – Go to #9"
+  },
+  {
+   "id": "TX-HUM-6",
+   "source": "S43",
+   "drug": "adalimumab",
+   "kind": "age",
+   "quote": "Is the client greater than or equal to (≥) 18 years of age? [] Yes – Go to #12 [] No – Deny"
+  },
+  {
+   "id": "TX-HUM-9",
+   "source": "S43",
+   "drug": "adalimumab",
+   "kind": "age",
+   "quote": "Is the client greater than or equal to (≥) 5 years of age? [] Yes – Go to #11 [] No - Deny"
+  },
+  {
+   "id": "TX-HUM-11",
+   "source": "S43",
+   "drug": "adalimumab",
+   "kind": "step_therapy",
+   "quote": "Has the client had at least a 30-day trial with conventional therapy in the last 180 days? [] Yes – Go to #12 [] No – And the request is for continuing therapy, go to #12 [] No – And the request is for initial therapy, deny"
+  },
+  {
+   "id": "TX-HUM-12",
+   "source": "S43",
+   "drug": "adalimumab",
+   "kind": "safety_exclusion",
+   "quote": "Does the client have a history of heart failure in the last 365 days? [] Yes – Deny [] No – Go to #13"
+  },
+  {
+   "id": "TX-HUM-13",
+   "source": "S43",
+   "drug": "adalimumab",
+   "kind": "safety_exclusion",
+   "quote": "Does the client have a history of demyelinating disease (multiple sclerosis, optic neuritis and/or Guillain-Barre syndrome) in the last 365 days? [] Yes – Deny [] No – Go to #14"
+  },
+  {
+   "id": "TX-HUM-14",
+   "source": "S43",
+   "drug": "adalimumab",
+   "kind": "safety_exclusion",
+   "quote": "Does the client have a history of hematologic abnormalities in the last 180 days? [] Yes – Deny [] No – Go to #15"
+  },
+  {
+   "id": "TX-HUM-15",
+   "source": "S43",
+   "drug": "adalimumab",
+   "kind": "safety_exclusion",
+   "quote": "Does the client have a serious active infection (including Hepatitis B virus and/or tuberculosis) in the last 180 days? [] Yes – Deny [] No – Go to #16"
+  },
+  {
+   "id": "TX-HUM-16",
+   "source": "S43",
+   "drug": "adalimumab",
+   "kind": "concurrent_therapy",
+   "quote": "Does the client have 1 claim for another TNF Blocker (other than adalimumab products) in the last 30 days? [] Yes – Deny [] No – Approve (365 days)"
+  },
+  {
+   "id": "TX-RIN-3",
+   "source": "S43",
+   "drug": "upadacitinib",
+   "kind": "diagnosis",
+   "quote": "Does the client have a diagnosis of active ankylosing spondylitis, moderately to severely active Crohn’s disease (CD), active non- radiographic axial spondyloarthritis (nr-axSpA), moderately to severely active rheumatoid arthritis (RA), active psoriatic arthritis (PsA) or ulcerative colitis in the last 730 days? [] Yes – Go to #4 [] No – Deny"
+  },
+  {
+   "id": "TX-RIN-4",
+   "source": "S43",
+   "drug": "upadacitinib",
+   "kind": "age",
+   "quote": "Is the client greater than or equal to (≥) 18 years of age? [] Yes – Go to #7 [] No – Deny"
+  },
+  {
+   "id": "TX-RIN-7",
+   "source": "S43",
+   "drug": "upadacitinib",
+   "kind": "step_therapy",
+   "quote": "Has the client had therapy with at least one TNF-blocker in the last 90 days? [] Yes – Go to #9 [] No – Go to #8"
+  },
+  {
+   "id": "TX-RIN-8",
+   "source": "S43",
+   "drug": "upadacitinib",
+   "kind": "step_therapy_manual",
+   "quote": "Has the client had inadequate response or intolerance to TNF-blockers? [Manual] [] Yes, Go to #9 [] No, Deny"
+  },
+  {
+   "id": "TX-RIN-9",
+   "source": "S43",
+   "drug": "upadacitinib",
+   "kind": "concurrent_therapy",
+   "quote": "Will the client have concurrent therapy with a JAK inhibitor, biologic DMARD or potent immunosuppressant? [] Yes – Deny [] No – Go to #10"
+  },
+  {
+   "id": "TX-RIN-10",
+   "source": "S43",
+   "drug": "upadacitinib",
+   "kind": "drug_interaction",
+   "quote": "Does the client have 1 claim for a strong CYP3A4 inducer in the last 90 days? [] Yes – Deny [] No – Go to #11"
+  },
+  {
+   "id": "TX-RIN-11",
+   "source": "S43",
+   "drug": "upadacitinib",
+   "kind": "safety_exclusion",
+   "quote": "Does the client have a diagnosis that indicates increased risk of GI perforation, thrombosis or malignancy in the last 180 days? [] Yes – Deny [] No – Go to #12"
+  },
+  {
+   "id": "TX-RIN-12",
+   "source": "S43",
+   "drug": "upadacitinib",
+   "kind": "safety_exclusion",
+   "quote": "Does the client have a diagnosis of severe hepatic impairment in the last 365 days? [] Yes – Deny [] No – Go to #13"
+  },
+  {
+   "id": "TX-RIN-13",
+   "source": "S43",
+   "drug": "upadacitinib",
+   "kind": "safety_exclusion",
+   "quote": "Does the client have a serious active infection (including Hepatitis B virus and/or tuberculosis) in the last 180 days? [] Yes – Deny [] No – Go to #14"
+  },
+  {
+   "id": "TX-RIN-14",
+   "source": "S43",
+   "drug": "upadacitinib",
+   "kind": "quantity",
+   "quote": "Is the requested dose less than or equal to (≤) 1 tablet daily? [] Yes – Approve (365 days) [] No - Deny"
+  },
+  {
+   "id": "TX-SKY-2",
+   "source": "S43",
+   "drug": "risankizumab",
+   "kind": "diagnosis",
+   "quote": "Does the client have a diagnosis of moderately to severely active Crohn’s disease (CD), moderate to severe plaque psoriasis (PS) or active psoriatic arthritis (PsA) in the last 730 days? [] Yes – Go to #3 [] No – Deny"
+  },
+  {
+   "id": "TX-SKY-3",
+   "source": "S43",
+   "drug": "risankizumab",
+   "kind": "safety_exclusion",
+   "quote": "Does the client have a serious active infection (including Hepatitis B virus and/or tuberculosis) in the last 180 days? [] Yes – Deny [] No – Go to #4"
+  },
+  {
+   "id": "TX-SKY-4",
+   "source": "S43",
+   "drug": "risankizumab",
+   "kind": "quantity",
+   "quote": "Is the request for less than or equal to (≤) one 150mg syringe/pen or one 180mg or 360mg cartridge? [] Yes – Approve (365 days) [] No - Deny"
+  },
+  {
+   "id": "TX-STE-4",
+   "source": "S43",
+   "drug": "ustekinumab",
+   "kind": "diagnosis",
+   "quote": "Does the client have a diagnosis of Crohn’s disease (CD) or ulcerative colitis (UC) in the last 730 days? [] Yes – Go to #5 [] No – Deny"
+  },
+  {
+   "id": "TX-STE-5",
+   "source": "S43",
+   "drug": "ustekinumab",
+   "kind": "step_therapy",
+   "quote": "Has the client had at least 30 days therapy for an immunomodulator, corticosteroid or TNF blocker in the last 180 days? [] Yes – Go to #6 [] No - Deny"
+  },
+  {
+   "id": "TX-STE-6",
+   "source": "S43",
+   "drug": "ustekinumab",
+   "kind": "safety_exclusion",
+   "quote": "Does the client have a serious active infection (including Hepatitis B virus and/or tuberculosis) in the last 180 days? [] Yes – Deny [] No – Approve (365 days)"
+  },
+  {
+   "id": "AET-RIN-PRESC",
+   "source": "S46",
+   "drug": "upadacitinib",
+   "kind": "prescriber",
+   "quote": "This medication must be prescribed by or in consultation with one of the following: A. Rheumatoid arthritis, ankylosing spondylitis, non-radiographic axial spondyloarthritis, and polyarticular juvenile idiopathic arthritis: rheumatologist B. Psoriatic arthritis: rheumatologist or dermatologist C. Atopic dermatitis: dermatologist or allergist/immunologist D. Ulcerative colitis and Crohn’s disease: gastroenterologist"
+  },
+  {
+   "id": "AET-RIN-RA",
+   "source": "S46",
+   "drug": "upadacitinib",
+   "kind": "step_therapy",
+   "quote": "Authorization of 12 months may be granted for adult members for treatment of moderately to severely active rheumatoid arthritis (RA) when the member has experienced an inadequate response or intolerance to at least one tumor necrosis factor (TNF) inhibitor."
+  },
+  {
+   "id": "AET-RIN-PSA",
+   "source": "S46",
+   "drug": "upadacitinib",
+   "kind": "step_therapy",
+   "quote": "Authorization of 12 months may be granted for members 2 years of age or older for treatment of active psoriatic arthritis when the member has had an inadequate response or intolerance to at least one TNF inhibitor."
+  },
+  {
+   "id": "AET-RIN-UC1",
+   "source": "S46",
+   "drug": "upadacitinib",
+   "kind": "step_therapy",
+   "quote": "Authorization of 12 months may be granted for adult members for treatment of moderately to severely active UC when the member has had an inadequate response or intolerance to at least one TNF inhibitor."
+  },
+  {
+   "id": "AET-RIN-UC2",
+   "source": "S46",
+   "drug": "upadacitinib",
+   "kind": "step_therapy",
+   "quote": "Authorization of 12 months may be granted for adult members who have previously received a biologic (other than a TNF inhibitor) or targeted synthetic drug (e.g., Xeljanz) indicated for moderately to severely active ulcerative colitis."
+  },
+  {
+   "id": "AET-RIN-RENEW-RA",
+   "source": "S46",
+   "drug": "upadacitinib",
+   "kind": "renewal",
+   "quote": "Authorization of 12 months may be granted for all adult members (including new members) who are using the requested medication for moderately to severely active RA and who achieve or maintain a positive clinical response as evidenced by disease activity improvement of at least 20% from baseline in tender joint count, swollen joint count, pain, or disability."
+  },
+  {
+   "id": "AET-RIN-TB",
+   "source": "S46",
+   "drug": "upadacitinib",
+   "kind": "safety_screening",
+   "quote": "Member has had a documented negative tuberculosis (TB) test (which can include a tuberculosis skin test [TST] or an interferon-release assay [IGRA])* within 6 months of initiating therapy for persons who are naïve to biologic drugs or targeted synthetic drugs associated with an increased risk of TB."
+  },
+  {
+   "id": "AET-RIN-DOC",
+   "source": "S46",
+   "drug": "upadacitinib",
+   "kind": "documentation",
+   "quote": "Initial requests: Chart notes, medical record documentation, or claims history supporting previous medications tried (if applicable), including response to therapy."
+  },
+  {
+   "id": "CIG-003-EXC",
+   "source": "S44",
+   "drug": "adalimumab",
+   "kind": "preferred_product_step",
+   "quote": "Patient has tried ALL of adalimumab-aaty, Cyltezo/adalimumab-adbm, Humira (NDCs starting with 00074), and Simlandi/adalimumab-ryvk (NDCs starting with 82009) [documentation required]; AND ... b) Patient cannot continue to use ALL Preferred medications (i.e., adalimumab-aaty Cyltezo/adalimumab-adbm, Humira [NDCs starting with 00074], and Simlandi/adalimumab-ryvk [NDCs starting with 82009]) due to formulation differences in the inactive ingredient(s) [e.g., differences in stabilizing agent, buffering agent, and/or surfactant] which, according to the prescriber, would result in a significant allergy or serious adverse reaction [documentation required]."
+  },
+  {
+   "id": "CIG-003-STD",
+   "source": "S44",
+   "drug": "adalimumab",
+   "kind": "dependency",
+   "quote": "For all products (Preferred and Non-Preferred), the patient is required to meet the standard Inflammatory Conditions – Adalimumab Products Prior Authorization Policy criteria."
+  },
+  {
+   "id": "CIG-040-RA",
+   "source": "S45",
+   "drug": "tofacitinib",
+   "kind": "preferred_product_step",
+   "quote": "a) Patient has tried generic tofacitinib tablets or tofacitinib XR tablets [documentation required]; AND b) Patient cannot continue to use generic tofacitinib/XR tablets due to formulation differences in the inactive ingredient(s) [e.g., differences in dyes, fillers, preservatives] between the brand and bioequivalent generic product which, per the prescriber, would result in a significant allergy or serious adverse reaction [documentation required]; AND c) Patient has tried ONE of Enbrel or an adalimumab product"
+  },
+  {
+   "id": "LBL-RIN-IND",
+   "source": "L-RINVOQ",
+   "drug": "upadacitinib",
+   "kind": "label_indication",
+   "quote": "RINVOQ is indicated for the treatment of adults with moderately to severely active rheumatoid arthritis who have had an inadequate response or intolerance to one or more TNF blockers."
+  },
+  {
+   "id": "LBL-RIN-PSA",
+   "source": "L-RINVOQ",
+   "drug": "upadacitinib",
+   "kind": "label_indication",
+   "quote": "RINVOQ/RINVOQ LQ is indicated for the treatment of adults and pediatric patients 2 years of age and older with active psoriatic arthritis who have had an inadequate response or intolerance to one or more TNF blockers."
+  },
+  {
+   "id": "LBL-RIN-UC",
+   "source": "L-RINVOQ",
+   "drug": "upadacitinib",
+   "kind": "label_indication",
+   "quote": "RINVOQ is indicated for the treatment of adults with moderately to severely active ulcerative colitis (UC) who have had an inadequate response or intolerance to one or more TNF blockers. If TNF blockers are clinically inadvisable, patients should have received at least one approved systemic therapy prior to use of RINVOQ."
+  },
+  {
+   "id": "LBL-RIN-MACE",
+   "source": "L-RINVOQ",
+   "drug": "upadacitinib",
+   "kind": "label_boxed_warning",
+   "quote": "In RA patients 50 years of age and older with at least one cardiovascular risk factor treated with another JAK inhibitor, a higher rate of major adverse cardiovascular events (MACE) (defined as cardiovascular death, myocardial infarction, and stroke), was observed when compared with TNF blockers. Patients who are current or past smokers are at additional increased risk."
+  },
+  {
+   "id": "LBL-SKY-UC",
+   "source": "L-SKYRIZI",
+   "drug": "risankizumab",
+   "kind": "label_indication",
+   "quote": "moderately to severely active ulcerative colitis in adults. ( 1.4 )"
+  },
+  {
+   "id": "LBL-HUM-HF",
+   "source": "L-HUMIRA",
+   "drug": "adalimumab",
+   "kind": "label_warning",
+   "quote": "Cases of worsening congestive heart failure (CHF) and new onset CHF have been reported with TNF blockers. Cases of worsening CHF have also been observed with HUMIRA. ... Exercise caution when using HUMIRA in patients who have heart failure and monitor them carefully."
+  },
+  {
+   "id": "LBL-XEL-IND",
+   "source": "L-XELJANZ",
+   "drug": "tofacitinib",
+   "kind": "label_indication",
+   "quote": "Moderately to severely active rheumatoid arthritis (RA), who have had an inadequate response or intolerance to one or more TNF blockers."
+  },
+  {
+   "id": "TX-DEF-POTENT",
+   "source": "S43",
+   "drug": "*",
+   "kind": "definition",
+   "defines": [
+    "potent immunosuppressant"
+   ],
+   "table": "Potent Immunosuppressants*",
+   "quote": "Potent Immunosuppressants* ... ASTAGRAF XL 0.5 MG CAPSULE ... AZATHIOPRINE 50 MG TABLET ... CELLCEPT 200 MG/ML ORAL SUSP ... CYCLOSPORINE 100 MG CAPSULE ... CYCLOSPORINE MODIFIED 100 MG ... GENGRAF 100 MG CAPSULE ... IMURAN 50 MG TABLET ... MYCOPHENOLATE 250 MG CAPSULE ... MYCOPHENOLIC ACID DR 180 MG TAB ... NEORAL 100 MG CAPSULE ... SANDIMMUNE 100 MG CAPSULE ... TACROLIMUS 0.5 MG CAPSULE ... *Potent immunosuppressants also include clients who have ≥ 14 days therapy with doses ≥ 80 mg per day of prednisone. Equivalent doses include ≥ 400mg/day cortisone, 320mg/day hydrocortisone, 80mg/day prednisolone, 64mg/day methylprednisolone and 12mg/day dexamethasone."
+  },
+  {
+   "id": "TX-DEF-JAK",
+   "source": "S43",
+   "drug": "*",
+   "kind": "definition",
+   "defines": [
+    "JAK inhibitor"
+   ],
+   "table": "JAK Inhibitors",
+   "quote": "JAK Inhibitors ... CIBINQO 100 MG TABLET ... JAKAFI 10 MG TABLET ... LEQSELVI 8 MG TABLET ... LITFULO 50 MG CAPSULE ... OLUMIANT 1 MG TABLET ... RINVOQ ER 15 MG TABLET ... RINVOQ LQ 1 MG/ML SOLUTION ... SOTYKTU 6 MG TABLET ... XELJANZ 1 MG/ML SOLUTION ... XELJANZ XR 11 MG TABLET"
+  },
+  {
+   "id": "TX-DEF-BDMARD",
+   "source": "S43",
+   "drug": "*",
+   "kind": "definition",
+   "defines": [
+    "biologic DMARD"
+   ],
+   "table": "Biologic DMARDs",
+   "quote": "Biologic DMARDs ... ACTEMRA 162MG/0.9ML SYRINGE ... ADALIMUMAB-AACF (CF) SYR 40 MG ... ADALIMUMAB-ADAZ (CF) PEN 40 MG ... ADALIMUMAB-ADAZ(CF) 40 MG SYRNG ... ADALIMUMAB-FKJP (CF) 20 MG SYRG ... ADALIMUMAB-FKJP (CF) PEN 40 MG ... ADALIMUMAB-ADBM (CF) 40 MG SYRNG ... ADALIMUMAB-ADBM (CF) CRHN 40 MG ... ADALIMUMAB-ADBM (CF) PEN 40 MG ... ADALIMUMAB-ADBM (CF) PEN PSORIA-UV 40 MG ... ADALIMUMAB-RYVK (CF) AI 40 MG ... ADALIMUMAB-RYVK (CF) 40 MG SYRG ... AMJEVITA 10 MG/0.2 ML SYRINGE ... CIMZIA 200MG/ML STARTER KIT ... COSENTYX 150MG/ML PEN INJECT ... CYLTEZO (CF) 10 MG/0.2 ML SYRNG ... CYLTEZO (CF) PEN 40 MG/0.8 ML ... CYLTEZO (CF) PEN CRH-UC-HS 40 MG ... CYLTEZO (CF) PEN PSORIA-UV 40 MG ... ENBREL 25MG KIT ... HADLIMA (CF) 40 MG/0.4 ML SYRNG ... HADLIMA (CF) PUSHTOUCH 40MG/0.4 ... HADLIMA 40 MG/0.8 ML SYRINGE ... HADLIMA PUSHTOUCH 40 MG/0.8 ML ... HULIO (CF) 20 MG/0.4 ML SYRINGE ... HULIO (CF) PEN 40 MG/0.8 ML ... HUMIRA (CF) 10 MG/0.1 ML SYRINGE ... HUMIRA (CF) PEDI CROHN 80 MG/0.8 ... HUMIRA (CF) PEN CRHN-UC-HS 80 MG ... HUMIRA (CF) PEN PS-UV-AHS 80-40 MG ... HUMIRA 10 MG/0.2 ML SYRINGE ... HUMIRA PEDI CROHN 40 MG/0.8 ML ... HUMIRA PEN 40 MG/0.4 ML ... HUMIRA PEN CROHN-UC-HS 40 MG ... HUMIRA PEN PS-UV-ADOL HS 40 MG ... HYRIMOZ (CF) 10 MG/0.1 ML SYRNG ... HYRIMOZ (CF) PEDI CROHN 80 MG ... HYRIMOZ (CF) PEN 40 MG/0.4 ML ... HYRIMOZ (CF) PEN CROHN-UC 80 MG ... HYRIMOZ (CF) PEN PSORIA 80-40 MG ... IDACIO (CF) PEN 40 MG/0.8 ML ... IDACIO (CF) PEN PSORIASIS 40 MG ... IDACIO (CF) PEN CROHNS-UC 40 MG ... IDACIO (CF) 40 MG/0.8 ML SYRINGE ... ILARIS 150MG/ML VIAL ... IMULDOSA 45 MG/0.5 ML SYRINGE ... KEVZARA 150 MG/1.14 ML PEN INJ ... KINERET 100MG/0.67ML SYRINGE ... ORENCIA 125MG/ML SYRINGE ... ORENCIA CLICKJECT 125MG/ML ... OTEZLA 28 DAY STARTER PACK ... OTULFI 45 MG/0.5 ML VIAL ... PYZCHIVA 45 MG/0.5 ML VIAL ... SELARSDI 45 MG/0.5 ML VIAL ... SILIQ 210 MG/1.5 ML SYRINGE ... SIMLANDI (CF) AI 40 MG/0.4 ML ... SIMLANDI (CF) 20 MG/0.2 ML SYRG ... SIMPONI 100MG/ML PEN INJECTOR ... SIMPONI ARIA 50MG/4ML VIAL ... STARJEMZA 45 MG/0.5 ML SYRINGE ... STELARA 45 MG/0.5 ML SYRINGE ... STEQEYMA 45 MG/0.5 ML VIAL ... TALTZ 80 MG/ML AUTOINJ ... TREMFYA 100 MG/ML INJECTOR ... USTEKINUMAB-TTWE 45 MG/0.5ML SYRINGE ... YESINTEK 45 MG/0.5 ML SYRINGE"
+  },
+  {
+   "id": "TX-DEF-CYP3A4",
+   "source": "S43",
+   "drug": "*",
+   "kind": "definition",
+   "defines": [
+    "strong CYP3A4 inducer"
+   ],
+   "table": "Strong CYP3A4 Inducer",
+   "quote": "Strong CYP3A4 Inducer ... ACTOPLUS MED 15-850MG TABLET ... ACTOPLUS MET 15-500MG TABLET ... ACTOPLUS MET XR 15-1000MG TABLET ... ACTOS 15MG TABLET ... APTIOM 200MG TABLET ... ATRIPLA TABLET ... BEXAROTENE 75MG CAPSULE ... CARBAMAZEPINE 100 MG TAB CHEW ... CARBATROL ER 100 MG CAPSULE ... DILANTIN 100 MG CAPSULE ... DUETACT 30-2MG TABLET ... EPITOL 200 MG TABLET ... EQUETRO 100 MG CAPSULE ... INTELENCE 100MG TABLET ... LYSODREN 500MG TABLET ... MODAFINIL 100MG TABLET ... MYCOBUTIN 150 MG CAPSULE ... MYSOLINE 250MG TABLET ... NEVIRAPINE 200MG TABLET ... ORKAMBI 100-125MG TABLET ... OSENI 12.5-15MG TABLET ... PHENOBARBITAL 100 MG TABLET ... PHENYTEK 200 MG CAPSULE ... PHENYTOIN 125 MG/5 ML SUSP ... PHENYTOIN SOD EXT 100 MG CAP ... PIOGLITAZONE HCL 15 MG TABLET ... PIOGLITAZONE-GLIMEPIRIDE 30-2 ... PIOGLITAZONE-METFORMIN 15-500 ... PRIFTIN 150MG TABLET ... PRIMIDONE 250MG TABLET ... PROVIGIL 100MG TABLET ... RIFABUTIN 150 MG CAPSULE ... RIFADIN 150 MG CAPSULE ... RIFADIN IV 600 MG VIAL ... RIFAMATE CAPSULE ... RIFAMPIN 150 MG CAPSULE ... RIFAMPIN IV 600 MG VIAL ... RIFATER TABLET ... SUSTIVA 200MG CAPSULE ... TAFINLAR 50MG CAPSULE ... TARGRETIN 75MG CAPSULE ... TEGRETOL 100 MG/5 ML SUSP ... TEGRETOL XR 100 MG TABLET ... TRACLEER 125MG TABLET ... VIRAMUNE 200MG TABLET ... VIRAMUNE XR 100MG TABLET ... XTANDI 40MG CAPSULE"
+  },
+  {
+   "id": "TX-DEF-TNF",
+   "source": "S43",
+   "drug": "*",
+   "kind": "definition",
+   "defines": [
+    "TNF blocker",
+    "TNF-blocker"
+   ],
+   "table": "TNF Blocker",
+   "quote": "TNF Blocker ... ADALIMUMAB-AACF (CF) SYR 40 MG ... ADALIMUMAB-ADAZ (CF) PEN 40 MG ... ADALIMUMAB-ADAZ(CF) 40 MG SYRNG ... ADALIMUMAB-FKJP (CF) 20 MG SYRG ... ADALIMUMAB-FKJP (CF) PEN 40 MG ... ADALIMUMAB-ADBM (CF) 40 MG SYRNG ... ADALIMUMAB-ADBM (CF) CRHN 40 MG ... ADALIMUMAB-ADBM (CF) PEN 40 MG ... ADALIMUMAB-ADBM (CF) PEN PSORIA-UV 40 MG ... ADALIMUMAB-RYVK (CF) AI 40 MG ... ADALIMUMAB-RYVK (CF) 40 MG SYRG ... ADALIMUMAB-ADAZ (CF) 40 MG SYRNG ... AMJEVITA 10 MG/0.2 ML SYRINGE ... CIMZIA 200MG/ML STARTER KIT ... CYLTEZO (CF) 10 MG/0.2 ML SYRNG ... CYLTEZO (CF) PEN 40 MG/0.8 ML ... CYLTEZO (CF) PEN CRH-UC-HS 40 MG ... CYLTEZO (CF) PEN PSORIA-UV 40 MG ... ENBREL 25 MG KIT ... HADLIMA (CF) 40 MG/0.4 ML SYRNG ... HADLIMA (CF) PUSHTOUCH 40MG/0.4 ... HADLIMA 40 MG/0.8 ML SYRINGE ... HADLIMA PUSHTOUCH 40 MG/0.8 ML ... HULIO (CF) 20 MG/0.4 ML SYRINGE ... HULIO (CF) PEN 40 MG/0.8 ML ... HUMIRA (CF) 10 MG/0.1 ML SYRINGE ... HUMIRA PEN 40 MG/0.4 ML ... HUMIRA (CF) PEDI CROHN 80 MG/0.8 ... HUMIRA (CF) PEN CRHN-UC-HS 80 MG ... HUMIRA (CF) PEN PEDI UC 80 MG ... HUMIRA (CF) PEN PS-UV-AHS 80-40 MG ... HUMIRA 10 MG/0.2 ML SYRINGE ... HUMIRA PEN CROHN-UC-HS 40 MG ... HUMIRA PEN PS-UV-ADOL HS 40 MG ... HUMIRA PEDI CROHN 40 MG/0.8 ML ... HYRIMOZ (CF) 10 MG/0.1 ML SYRNG ... HYRIMOZ (CF) PEDI CROHN 80 MG ... HYRIMOZ (CF) PEN 40 MG/0.4 ML ... HYRIMOZ (CF) PEN CROHN-UC 80 MG ... HYRIMOZ (CF) PEN PSORIA 80-40 MG ... IDACIO (CF) PEN 40 MG/0.8 ML ... IDACIO (CF) PEN PSORIASIS 40 MG ... IDACIO (CF) PEN CROHNS-UC 40 MG ... IDACIO (CF) 40 MG/0.8 ML SYRINGE ... SIMLANDI (CF) AI 40 MG/0.4 ML ... SIMLANDI (CF) 20 MG/0.2 ML SYRG ... SIMPONI 100MG/ML PEN INJECTOR ... SIMPONI ARIA 50MG/4ML VIAL TNF Blocker (excluding adalimumab) GCN Description"
+  },
+  {
+   "id": "TX-DEF-CONV-UC",
+   "source": "S43",
+   "drug": "*",
+   "kind": "definition",
+   "defines": [
+    "conventional therapy"
+   ],
+   "table": "Conventional Therapy – Ulcerative Colitis",
+   "quote": "Conventional Therapy – Ulcerative Colitis ... APRISO ER 0.375 GRAM CAPSULE ... AZATHIOPRINE 50 MG TABLET ... BUDESONIDE DR 3 MG CAPSULE ... CORTEF 10 MG TABLET ... CYCLOSPORINE 100 MG CAPSULE ... CYCLOSPORINE MODIFIED 100 MG ... DELZICOL DR 400 MG CAPSULE ... DEXAMETHASONE 0.5 MG TABLET ... DEXAMETHASONE INTENSOL 1 MG/ 1 ML ... DIPENTUM 250 MG CAPSULE ... GENGRAF 100 MG CAPSULE ... HYDROCORTISONE 10 MG TABLET ... IMURAN 50 MG TABLET ... LIALDA DR 1.2 GM TABLET ... MEDROL 16 MG TABLET ... MERCAPTOPURINE 50 MG TABLET ... MESALAMINE 800 MG DR TABLET ... METHOTREXATE 2.5 MG TABLET ... METHYLPREDNISOLONE 16 MG TABLET ... MILLIPRED 10 MG/5 ML SOLUTION ... NEORAL 100 MG CAPSULE ... OTREXUP 10 MG/0.4 ML AUTO-INJ ... PENTASA 250 MG CAPSULE ... PREDNISOLONE 15 MG/5 ML SOLN ... PREDNISOLONE ODT 10 MG TABLET ... PREDNISONE 1 MG TABLET ... PURIXAN 20 MG/ML ORAL SUSP ... SANDIMMUNE 100 MG CAPSULE ... SULFASALAZINE 500MG TABLET ... TREXALL 10MG TABLET ... UCERIS 9 MG ER TABLET ... VERIPRED 20 MG/5 ML SOLN ... XATMEP 2.5MG/ML ORAL SOLUTION"
+  },
+  {
+   "id": "TX-DEF-CORT",
+   "source": "S43",
+   "drug": "*",
+   "kind": "definition",
+   "defines": [
+    "corticosteroid"
+   ],
+   "table": "Corticosteroids",
+   "quote": "Corticosteroids ... CORTEF 10 MG TABLET ... DEXAMETHASONE 0.5 MG TABLET ... DEXAMETHASONE INTENSOL 1 MG/ 1 ML ... HYDROCORTISONE 10 MG TABLET ... MEDROL 16 MG TABLET ... METHYLPREDNISOLONE 16 MG TABLET ... MILLIPRED 10 MG/5 ML SOLUTION ... PREDNISOLONE 15 MG/5 ML SOLN ... PREDNISOLONE ODT 10 MG TABLET ... PREDNISONE 1 MG TABLET ... VERIPRED 20 MG/5 ML SOLN"
+  },
+  {
+   "id": "INT-TX-TNF",
+   "source": "R-MOHAN",
+   "drug": "*",
+   "kind": "interpretation",
+   "applies_to_source": "S43",
+   "defines": [
+    "TNF blocker",
+    "TNF-blocker"
+   ],
+   "quote": "For Texas Medicaid steps that ask about therapy with a TNF blocker, a drug that is a TNF blocker by its FDA label counts as TNF-blocker therapy even when the Texas TNF Blocker table does not list it, for example an infliximab infusion billed on the medical benefit or a newer adalimumab biosimilar such as adalimumab-aaty."
+  }
+ ]
+}
