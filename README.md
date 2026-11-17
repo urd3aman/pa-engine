@@ -5,8 +5,8 @@ only from verbatim payer policy and FDA-label text, proves every citation exists
 expert-graded test set.
 
 Designed, specified and graded by **Mohan Nadarajah**: 25+ years in pharma market access, payer analytics and specialty sales
-(Amgen, Merck, Cytokinetics, IQVIA, Mayo Clinic). He wrote the rules, the 30-case test set and the grades; the code was written
-with AI coding agents (Claude) under his direction.
+(Amgen, Merck, Cytokinetics, IQVIA, Mayo Clinic). He chose the payer and label rules, directed the
+30-case test set and graded every answer; the cases and the code were drafted with AI coding agents (Claude) under his direction.
 
 > All 30 test cases are **synthetic**. No real patients, no PHI.
 
