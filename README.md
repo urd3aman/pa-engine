@@ -4,8 +4,9 @@
 only from verbatim payer policy and FDA-label text, proves every citation exists, and is scored run by run against an
 expert-graded test set.
 
-Built by **Mohan Nadarajah**: 25+ years in pharma market access, payer analytics and specialty sales (Amgen, Merck, Cytokinetics,
-IQVIA, Mayo Clinic), now building evaluated AI systems for healthcare.
+Designed, specified and graded by **Mohan Nadarajah**: 25+ years in pharma market access, payer analytics and specialty sales
+(Amgen, Merck, Cytokinetics, IQVIA, Mayo Clinic). He wrote the rules, the 30-case test set and the grades; the code was written
+with AI coding agents (Claude) under his direction.
 
 > All 30 test cases are **synthetic**. No real patients, no PHI.
 
